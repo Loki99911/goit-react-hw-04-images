@@ -4,19 +4,20 @@ import { createPortal } from 'react-dom';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export const Modal = funcCloseClick => {
+export const Modal = ({ url, text, funcCloseClick }) => {
   useEffect(() => {
     const hendlePressEsc = event => {
       if (event.code === 'Escape') {
-        console.log('EscON');
-        window.addEventListener('keydown', hendlePressEsc);
+        funcCloseClick();
       }
     };
 
+    window.addEventListener('keydown', hendlePressEsc);
     return () => {
       window.removeEventListener('keydown', hendlePressEsc);
-      console.log('EscOFF');
     };
+    // Следующая строка нужна!!! что б ввырубить ESLINT!!!!
+    // eslint-disable-next-line
   }, []);
 
   const hendleClickBackdrop = event => {
@@ -28,7 +29,7 @@ export const Modal = funcCloseClick => {
   return createPortal(
     <div className="Overlay" onClick={hendleClickBackdrop}>
       <div className="Modal">
-        <img src={this.props.url} alt={this.props.text} />
+        <img src={url} alt={text} />
       </div>
     </div>,
     modalRoot
